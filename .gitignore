@@ -1,0 +1,4 @@
+# ignore downloaded kernel archives and kernel source trees
+linux.*xz
+linux.*gz
+linux-.*

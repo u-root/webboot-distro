@@ -2,20 +2,39 @@
 # It is here for a record of how we did this.
 # We leave things hanging around for the inevitable errors.
 # Clean should get them all.
-all: setup TinyCorePure64.iso CorePure64.iso
-setup:
+all: setup TinyCorePure64.iso CorePure64.iso LHSCowboys.iso DHSGaels.iso
+
+setup: TinyCorePure64-current.iso
 	mkdir -p cdrom tcpiso cpiso
 
-TinyCorePure64.iso:
-	mkdir -p tcpiso
+TinyCorePure64-current.iso:
 	wget http://tinycorelinux.net/10.x/x86_64/release/TinyCorePure64-current.iso
+
+TinyCorePure64.iso: setup
+	mkdir -p tcpiso
 	sudo mount -o loop TinyCorePure64-current.iso cdrom
 	rsync -av cdrom/ tcpiso
 	sudo umount cdrom
 	sudo cp ../../../../../kernel/tinycore/4.19.10/bzImage tcpiso/boot/vmlinuz64 
 	sudo mkisofs -o TinyCorePure64.iso -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -J -R -V webboot tcpiso
 
-CorePure64.iso:
+LHSCowboys.iso: setup
+	mkdir -p tcpiso
+	sudo mount -o loop TinyCorePure64-current.iso cdrom
+	rsync -av cdrom/ tcpiso
+	sudo umount cdrom
+	sudo cp ../../../../../kernel/tinycore/4.19.10/bzImage tcpiso/boot/vmlinuz64 
+	sudo mkisofs -o $@ -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -J -R -V webboot tcpiso
+
+DHSGaels.iso: setup
+	mkdir -p tcpiso
+	sudo mount -o loop TinyCorePure64-current.iso cdrom
+	rsync -av cdrom/ tcpiso
+	sudo umount cdrom
+	sudo cp ../../../../../kernel/tinycore/4.19.10/bzImage tcpiso/boot/vmlinuz64 
+	sudo mkisofs -o $@ -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -J -R -V webboot tcpiso
+
+CorePure64.iso: setup
 	mkdir -p cpiso
 	wget http://tinycorelinux.net/10.x/x86_64/release/CorePure64-current.iso
 	sudo mount -o loop CorePure64-current.iso cdrom

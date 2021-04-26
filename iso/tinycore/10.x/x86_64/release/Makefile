@@ -10,28 +10,31 @@ setup: TinyCorePure64-current.iso
 TinyCorePure64-current.iso:
 	wget http://tinycorelinux.net/10.x/x86_64/release/TinyCorePure64-current.iso
 
-TinyCorePure64.iso: setup
+TinyCorePure64.iso: setup *.png
 	mkdir -p tcpiso
 	sudo mount -o loop TinyCorePure64-current.iso cdrom
 	rsync -av cdrom/ tcpiso
 	sudo umount cdrom
 	sudo cp ../../../../../kernel/tinycore/4.19.10/bzImage tcpiso/boot/vmlinuz64 
+	sudo cp *.png tcpiso
 	sudo mkisofs -o TinyCorePure64.iso -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -J -R -V webboot tcpiso
 
-LHSCowboys.iso: setup
+LHSCowboys.iso: setup *.png
 	mkdir -p tcpiso
 	sudo mount -o loop TinyCorePure64-current.iso cdrom
 	rsync -av cdrom/ tcpiso
 	sudo umount cdrom
 	sudo cp ../../../../../kernel/tinycore/4.19.10/bzImage tcpiso/boot/vmlinuz64 
+	sudo cp *.png tcpiso
 	sudo mkisofs -o $@ -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -J -R -V webboot tcpiso
 
-DHSGaels.iso: setup
+DHSGaels.iso: setup *.png
 	mkdir -p tcpiso
 	sudo mount -o loop TinyCorePure64-current.iso cdrom
 	rsync -av cdrom/ tcpiso
 	sudo umount cdrom
 	sudo cp ../../../../../kernel/tinycore/4.19.10/bzImage tcpiso/boot/vmlinuz64 
+	sudo cp *.png tcpiso
 	sudo mkisofs -o $@ -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -J -R -V webboot tcpiso
 
 CorePure64.iso: setup
